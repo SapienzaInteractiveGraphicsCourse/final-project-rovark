@@ -2,7 +2,7 @@
 
 **SCAN · MAP · SURVIVE**
 
-🎮 [Play the game]()
+🎮 [Play the game](https://sapienzainteractivegraphicscourse.github.io/final-project-rovark/)
 
 ---
 
