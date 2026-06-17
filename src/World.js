@@ -14,7 +14,7 @@ export class ProceduralEnvironment {
         // textures loader
         const texLoader = new THREE.TextureLoader();
         const loadTex = (name, repeatX, repeatY) => {
-            const tex = texLoader.load('../assets/' + name);
+            const tex = texLoader.load('assets/' + name);
             tex.wrapS = THREE.RepeatWrapping;
             tex.wrapT = THREE.RepeatWrapping;
             tex.repeat.set(repeatX, repeatY);

@@ -125,20 +125,20 @@ async function init(gameMode = 'survive') {
 
     // ROVER
     const rover = new Rover(scene);
-    await rover.load('../assets/turtlebot3_waffle_pi.glb');
+    await rover.load('assets/turtlebot3_waffle_pi.glb');
 
     // ENEMIES
     const enemies = [];
 
     if (gameMode === 'survive') {
-        const enemy_1 = new Enemy(scene); await enemy_1.load('../assets/fetch.glb'); enemy_1.setInitialPosition(allColliders); 
-        const enemy_2 = new Enemy(scene); await enemy_2.load('../assets/fetch.glb'); enemy_2.setInitialPosition(allColliders); 
-        const enemy_3 = new Enemy(scene); await enemy_3.load('../assets/fetch.glb'); enemy_3.setInitialPosition(allColliders); 
-        const enemy_4 = new Enemy(scene); await enemy_4.load('../assets/husky.glb'); enemy_4.setInitialPosition(allColliders); 
-        const enemy_5 = new Enemy(scene); await enemy_5.load('../assets/husky.glb'); enemy_5.setInitialPosition(allColliders); 
-        const enemy_6 = new Enemy(scene); await enemy_6.load('../assets/pioneer3at.glb'); enemy_6.setInitialPosition(allColliders); 
-        const enemy_7 = new Enemy(scene); await enemy_7.load('../assets/pioneer3at.glb'); enemy_7.setInitialPosition(allColliders); 
-        const enemy_8 = new Enemy(scene); await enemy_8.load('../assets/pioneer3at.glb'); enemy_8.setInitialPosition(allColliders); 
+        const enemy_1 = new Enemy(scene); await enemy_1.load('assets/fetch.glb'); enemy_1.setInitialPosition(allColliders); 
+        const enemy_2 = new Enemy(scene); await enemy_2.load('assets/fetch.glb'); enemy_2.setInitialPosition(allColliders); 
+        const enemy_3 = new Enemy(scene); await enemy_3.load('assets/fetch.glb'); enemy_3.setInitialPosition(allColliders); 
+        const enemy_4 = new Enemy(scene); await enemy_4.load('assets/husky.glb'); enemy_4.setInitialPosition(allColliders); 
+        const enemy_5 = new Enemy(scene); await enemy_5.load('assets/husky.glb'); enemy_5.setInitialPosition(allColliders); 
+        const enemy_6 = new Enemy(scene); await enemy_6.load('assets/pioneer3at.glb'); enemy_6.setInitialPosition(allColliders); 
+        const enemy_7 = new Enemy(scene); await enemy_7.load('assets/pioneer3at.glb'); enemy_7.setInitialPosition(allColliders); 
+        const enemy_8 = new Enemy(scene); await enemy_8.load('assets/pioneer3at.glb'); enemy_8.setInitialPosition(allColliders); 
         enemies.push(enemy_1, enemy_2, enemy_3, enemy_4, enemy_5, enemy_6, enemy_7, enemy_8);
     }
 

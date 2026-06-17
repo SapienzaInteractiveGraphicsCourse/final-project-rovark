@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROVARK</title>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/examples/jsm/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+  <script type="module" crossorigin src="./assets/index-C5DK8A7a.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-Dx-i8An8.css">
+</head>
+<body>
+    <!-- start window -->
+    <div id="title-screen">
+      <h1 class="title">ROVARK</h1>
+      <h2 class="subtitle">SCAN - MAP - SURVIVE</h2>
+
+      <!-- Mode selection cards -->
+      <div class="mode-select">
+        <div class="mode-card survive" onclick="startGame('survive')">
+          <div class="mode-icon">
+            <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- crosshair / target -->
+              <circle cx="22" cy="22" r="18" stroke="#ff4422" stroke-width="1.5" stroke-dasharray="4 3"/>
+              <circle cx="22" cy="22" r="9" stroke="#ff4422" stroke-width="1.5"/>
+              <circle cx="22" cy="22" r="2.5" fill="#ff4422"/>
+              <!-- tick marks -->
+              <line x1="22" y1="4" x2="22" y2="9" stroke="#ff4422" stroke-width="1.5"/>
+              <line x1="22" y1="35" x2="22" y2="40" stroke="#ff4422" stroke-width="1.5"/>
+              <line x1="4" y1="22" x2="9" y2="22" stroke="#ff4422" stroke-width="1.5"/>
+              <line x1="35" y1="22" x2="40" y2="22" stroke="#ff4422" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <div class="mode-title">SURVIVE</div>
+          <div class="mode-desc">
+            Enemy rovers patrol the map.<br>
+            Collect beacons, find the real exit.<br>
+            Watch out for fake exits.<br>
+            <span style="color:#ff6644">High risk · High reward</span>
+          </div>
+        </div>
+ 
+        <div class="mode-card explore" onclick="startGame('explore')">
+          <div class="mode-icon">
+            <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- compass rose -->
+              <circle cx="22" cy="22" r="18" stroke="#00ccff" stroke-width="1.5"/>
+              <!-- N arrow (filled, pointing up) -->
+              <polygon points="22,6 19,20 22,17 25,20" fill="#00ccff"/>
+              <!-- S arrow (outline, pointing down) -->
+              <polygon points="22,38 19,24 22,27 25,24" fill="none" stroke="#00ccff" stroke-width="1.2"/>
+              <!-- E / W ticks -->
+              <line x1="36" y1="22" x2="32" y2="22" stroke="#00ccff" stroke-width="1.2"/>
+              <line x1="8" y1="22" x2="12" y2="22" stroke="#00ccff" stroke-width="1.2"/>
+              <!-- center dot -->
+              <circle cx="22" cy="22" r="2" fill="#00ccff"/>
+            </svg>
+          </div>
+          <div class="mode-title">EXPLORE</div>
+          <div class="mode-desc">
+            No enemies. No fake exits.<br>
+            Map the environment freely.<br>
+            Collect all beacons, find the exit.<br>
+            <span style="color:#00ccff">Pure exploration</span>
+          </div>
+        </div>
+      </div>
+ 
+      <div class="instructions">
+        Press <span style="color:#00ffcc">SPACE</span> to use the Lidar scanner.<br>
+        Use <span style="color:#ffaa00">W/A/S/D</span> to move and <span style="color:#ffaa00">V</span> for camera view.<br>
+        Find the <span style="color:#ff6644">Exit</span> to escape.
+        Press <span style="color:#00ffcc">M</span> to toggle audio - <span style="color:#507090">sound hints enemy proximity.</span><br>
+        <br>
+        <span style="color:#ff4422; letter-spacing:2px;">FOR CHALLENGERS</span> 
+        <span style="color:#507090">— Survive - First person view - No audio</span>
+      </div>
+    </div>
+
+    <button id="mute-btn">
+        <span class="mute-icon"></span>
+        AUDIO
+    </button>
+
+    <!-- damage message -->
+    <div id="damage-overlay"></div>
+    <div id="damage-msg"></div>
+    <div id="beacon-msg"></div>
+    <div id="view-msg"></div>
+
+    <!-- Map -->
+    <div id="minimap" style="display:none; position:fixed; top:20px; left:20px; background:rgba(0,0,0,0.75); border:1px solid rgba(0,255,150,0.3); border-radius:8px; padding:8px; z-index:10;">
+        <div style="font-size:10px; letter-spacing:2px; color:#00ff99; text-transform:uppercase; margin-bottom:6px;">TOP MAP</div>
+        <canvas id="minimap-canvas" width="160" height="160" style="display:block; border-radius:4px;"></canvas>
+    </div>
+
+    <!-- HUD STATS panel -->
+    <div id="hud-stats">
+        <h3>ROVER STATUS</h3>
+        <div class="hud-row">
+            <span>HEALTH</span>
+            <span class="hud-val" id="hud-hp">100</span>
+        </div>
+        <div class="hud-row">
+            <span>BEACONS</span>
+            <span class="hud-val" id="hud-beacons">0 / 15</span>
+        </div>
+        <div class="hud-row">
+            <span>TIME</span>
+            <span class="hud-val" id="hud-time">00:00</span>
+        </div>
+        <div class="hud-row">
+            <span>SCORE</span>
+            <span class="hud-val warn" id="hud-score">0</span>
+        </div>
+        <!-- HP bar (hidden in explore mode) -->
+        <div id="hp-bar-wrap">
+            <div id="hp-bar-label">INTEGRITY</div>
+            <div id="hp-bar-bg">
+                <div id="hp-bar-fill"></div>
+            </div>
+        </div>
+        <!-- Mode badge -->
+        <div id="hud-mode-badge">* EXPLORATION MODE *</div>
+    </div>
+
+    <!-- death window -->
+    <div id="game-over-screen">
+      <h1 class="fatal">SYSTEM FAILURE</h1>
+      <p class="fatal-sub">Rover destroyed by enemy units.</p>
+      <button class="btn btn-red" onclick="location.reload()">RESTART</button>
+    </div>
+
+    <div id="victory-screen">
+        <h1>MISSION COMPLETE</h1>
+        <p class="v-sub">ROVER EXTRACTED SUCCESSFULLY</p>
+        <div class="score-card">
+            <div class="score-line">
+                <span>BEACONS COLLECTED</span>
+                <span class="s-val bonus" id="v-beacons">—</span>
+            </div>
+            <div class="score-line">
+                <span>HEALTH REMAINING</span>
+                <span class="s-val" id="v-hp">—</span>
+            </div>
+            <div class="score-line">
+                <span>TIME ELAPSED</span>
+                <span class="s-val" id="v-time">—</span>
+            </div>
+            <div class="score-line">
+                <span>TIME BONUS</span>
+                <span class="s-val bonus" id="v-time-bonus">—</span>
+            </div>
+            <div class="score-line total-line">
+                <span>FINAL SCORE</span>
+                <span class="s-val" id="v-total">—</span>
+            </div>
+        </div>
+        <button class="btn btn-cyan" onclick="location.reload()">RESTART MISSION</button>
+    </div>
+
+    <!-- game -->
+</body>
+</html>
