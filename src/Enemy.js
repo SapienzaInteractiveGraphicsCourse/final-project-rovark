@@ -150,7 +150,7 @@ export class Enemy {
         this.mesh.rotation.y = Math.atan2(direction.x, direction.z); 
 
         // animation
-        const wheelRotSpeed = this.speed * delta * 4;
+        const wheelRotSpeed = this.speed * delta * 5;
         if (this.wheelFL) {
             this.wheelFL.rotation.z -= wheelRotSpeed;
         }
