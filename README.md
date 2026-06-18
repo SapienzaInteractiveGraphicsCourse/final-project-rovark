@@ -2,11 +2,11 @@
 
 **SCAN · MAP · SURVIVE**
 
-🎮 [Play the game](https://sapienzainteractivegraphicscourse.github.io/final-project-rovark/)
+A 3D exploration game built with Three.js. Navigate your rover through a procedurally generated environment, scan the surroundings with LiDAR, collect beacons and find the exit.
+
+[Try it live](https://sapienzainteractivegraphicscourse.github.io/final-project-rovark/)
 
 ---
-
-A 3D exploration game built with Three.js. Navigate your rover through a procedurally generated environment, scan the surroundings with LiDAR, collect beacons and find the exit.
 
 ## Controls
 
@@ -25,6 +25,8 @@ A 3D exploration game built with Three.js. Navigate your rover through a procedu
 
 ## Run locally
 
+1. Run the command:
 ```bash
 npx vite
 ```
+2. open the URL shown in the terminal (usually something like http://localhost:5173)
